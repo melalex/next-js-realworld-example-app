@@ -1,64 +1,31 @@
 /* Components */
 import { Providers } from "@/lib/providers";
-import { Nav } from "./components/Nav";
-
-/* Instruments */
-import styles from "./styles/layout.module.css";
-import "./styles/globals.css";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
 
 export default function RootLayout(props: React.PropsWithChildren) {
   return (
     <Providers>
       <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <title>Conduit</title>
+          <link
+            href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+            rel="stylesheet"
+            type="text/css"
+          />
+          <link
+            href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic"
+            rel="stylesheet"
+            type="text/css"
+          />
+          <link rel="stylesheet" href="//demo.productionready.io/main.css" />
+        </head>
         <body>
-          <section className={styles.container}>
-            <Nav />
-
-            <header className={styles.header}>
-              <img src="/logo.svg" className={styles.logo} alt="logo" />
-            </header>
-
-            <main className={styles.main}>{props.children}</main>
-
-            <footer className={styles.footer}>
-              <span>Learn </span>
-              <a
-                className={styles.link}
-                href="https://reactjs.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                React
-              </a>
-              <span>, </span>
-              <a
-                className={styles.link}
-                href="https://redux.js.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Redux
-              </a>
-              <span>, </span>
-              <a
-                className={styles.link}
-                href="https://redux-toolkit.js.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Redux Toolkit
-              </a>
-              ,<span> and </span>
-              <a
-                className={styles.link}
-                href="https://react-redux.js.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                React Redux
-              </a>
-            </footer>
-          </section>
+          <Header />
+          <main>{props.children}</main>
+          <Footer />
         </body>
       </html>
     </Providers>
