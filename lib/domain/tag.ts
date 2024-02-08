@@ -3,14 +3,9 @@ export interface Tag {
   value: string;
 }
 
-export class SimpleTag implements Tag {
-  constructor(private readonly tag: string) {}
-
-  get id() {
-    return this.tag;
-  }
-
-  get value() {
-    return this.tag;
-  }
+export default function createSimpleTag(source: string): Tag {
+  return {
+    id: source,
+    value: source,
+  };
 }

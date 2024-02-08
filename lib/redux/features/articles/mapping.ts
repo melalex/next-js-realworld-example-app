@@ -1,8 +1,8 @@
 import { Article } from "@/lib/domain/article";
 import { ArticleDto } from "./dto";
-import { SimpleTimestamp } from "@/lib/domain/timestamp";
-import { SimpleTag } from "@/lib/domain/tag";
+import createSimpleTag from "@/lib/domain/tag";
 import { mapProfileDto } from "../profiles";
+import createSimpleTimestamp from "@/lib/domain/timestamp";
 
 export function mapArticleDto(source: ArticleDto): Article {
   return {
@@ -10,9 +10,9 @@ export function mapArticleDto(source: ArticleDto): Article {
     tittle: source.tittle,
     description: source.description,
     body: source.description,
-    tagList: source.tagList.map((it) => new SimpleTag(it)),
-    createdAt: new SimpleTimestamp(source.createdAt),
-    updatedAt: new SimpleTimestamp(source.updatedAt),
+    tagList: source.tagList.map(createSimpleTag),
+    createdAt: createSimpleTimestamp(source.createdAt),
+    updatedAt: createSimpleTimestamp(source.updatedAt),
     favorited: source.favorited,
     favoritesCount: source.favoritesCount,
     author: mapProfileDto(source.author),

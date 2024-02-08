@@ -1,15 +1,15 @@
 import { config } from "@/lib/config";
 import { Article } from "@/lib/domain/article";
-import {
-  EntityState,
-  createEntityAdapter,
-  createSelector,
-} from "@reduxjs/toolkit";
+import { EntityState, createEntityAdapter } from "@reduxjs/toolkit";
 import { ArticleListDto } from "./dto";
-import { toPagination } from "@/lib/util";
+import { toPageCount, toPagination } from "@/lib/util";
 import { FullTagDescription } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import { mapArticleDto } from "./mapping";
 import { apiSlice } from "../api/apiSlice";
+
+interface ArticleApiState extends EntityState<Article> {
+  pageCount: number;
+}
 
 function extractTag({ slug }: Article): FullTagDescription<"Article"> {
   return {
@@ -23,11 +23,13 @@ const articleAdapter = createEntityAdapter<Article>({
   sortComparer: (a, b) => b.createdAt.iso.localeCompare(a.createdAt.iso),
 });
 
-const initialState = articleAdapter.getInitialState();
+export const initialState: ArticleApiState = articleAdapter.getInitialState({
+  pageCount: 0,
+});
 
-export const articleSlice = apiSlice.injectEndpoints({
+export const articleApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllArticles: builder.query<EntityState<Article>, number>({
+    getAllArticles: builder.query<ArticleApiState, number>({
       query: (page) => {
         const pagination = toPagination(page, config.articlesPerPage);
 
@@ -43,19 +45,23 @@ export const articleSlice = apiSlice.injectEndpoints({
         "Article",
         ...selectAll(result).map(extractTag),
       ],
-      transformResponse: (response: ArticleListDto, _meta, _arg) =>
-        articleAdapter.setAll(initialState, response.data.map(mapArticleDto)),
+      transformResponse: (response: ArticleListDto, _meta, _arg) => {
+        return {
+          ...articleAdapter.setAll(
+            initialState,
+            response.articles.map(mapArticleDto)
+          ),
+          pageCount: toPageCount(
+            response.articlesCount,
+            config.articlesPerPage
+          ),
+        };
+      },
     }),
   }),
 });
 
-export function selectAllArticles(page: number) {
-  return createSelector(
-    articleSlice.endpoints.getAllArticles.select(page),
-    (it) => it?.data
-  );
-}
+export const { selectAll, selectById, selectIds } =
+  articleAdapter.getSelectors();
 
-export const { selectAll } = articleAdapter.getSelectors();
-
-export const { useGetAllArticlesQuery } = articleSlice;
+export const { useGetAllArticlesQuery } = articleApiSlice;

@@ -3,10 +3,9 @@ export interface Timestamp {
   dateString: string;
 }
 
-export class SimpleTimestamp implements Timestamp {
-  dateString: string;
-
-  constructor(readonly iso: string) {
-    this.dateString = new Date(iso).toDateString();
-  }
+export default function createSimpleTimestamp(source: string): Timestamp {
+  return {
+    iso: source,
+    dateString: new Date(source).toDateString(),
+  };
 }

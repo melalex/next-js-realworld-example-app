@@ -1,3 +1,3 @@
-import * from "./api"
-import * from "./articles"
-import * from "./profiles"
+export * from "./api";
+export * from "./articles";
+export * from "./profiles";

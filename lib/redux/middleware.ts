@@ -1,5 +1,6 @@
 /* Core */
 import { createLogger } from "redux-logger";
+import { apiSlice } from "./features";
 
 const middleware = [
   createLogger({
@@ -15,6 +16,7 @@ const middleware = [
     },
     predicate: () => typeof window !== "undefined",
   }),
+  apiSlice.middleware,
 ];
 
 export { middleware };

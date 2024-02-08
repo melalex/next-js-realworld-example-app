@@ -23,9 +23,9 @@ export default function RootLayout(props: React.PropsWithChildren) {
           <link rel="stylesheet" href="//demo.productionready.io/main.css" />
         </head>
         <body>
-          <Header />
+          <Header/>
           <main>{props.children}</main>
-          <Footer />
+          <Footer/>
         </body>
       </html>
     </Providers>

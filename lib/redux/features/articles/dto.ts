@@ -14,5 +14,6 @@ export interface ArticleDto {
 }
 
 export interface ArticleListDto {
-  data: Array<ArticleDto>;
+  articles: Array<ArticleDto>;
+  articlesCount: number;
 }
